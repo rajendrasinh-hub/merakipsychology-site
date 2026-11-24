@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Patients — Welcome Note | Meraki Psychological Services</title>
+<meta name="description" content="New patients: please read and acknowledge Dr. Hema Babaria's Welcome Note, then request your first appointment.">
+<link rel="icon" type="image/png" href="assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Meraki Psychological Services — home">
+      <img src="assets/images/lotus.png" alt="" width="52" height="38">
+      <span class="brand-text"><span class="brand-name">Meraki</span><span class="brand-sub">Psychological Services</span></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="main-nav" id="site-nav" aria-label="Main">
+      <ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Me</a></li><li><a href="approach.html">My Approach</a></li><li><a href="practice.html">Practice Information</a></li><li><a href="new-patients.html" class="nav-cta" aria-current="page">New Patients</a></li><li><a href="contact.html">Contact</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">New Patients</span>
+    <h1>Welcome to my practice!</h1>
+    <div class="divider"><img src="assets/images/lotus.png" alt=""></div>
+    <p>Before requesting your first appointment, please read the Welcome Note below and acknowledge it.</p>
+  </div>
+</section>
+<section>
+  <div class="container prose">
+    <article class="welcome-letter reveal" aria-labelledby="welcome-title">
+      <img class="lotus-top" src="assets/images/lotus.png" alt="">
+      <h2 id="welcome-title">Welcome Note</h2>
+      <p class="lead">Welcome to my practice!</p>
+      <p>Life is a uniquely experienced journey, allowing us to mold, build, grow, and develop our physical, emotional, interpersonal, and spiritual selves. Each moment resonates with the music created by the interplay between our internal self and the external world. We all connect with, nurture, and play this tune in our own ways to flourish in both our emotional, social, and spiritual environments.</p>
+      <p>The process of therapy is also a journey—one that is unique and individualized. It is an opportunity to explore, understand, connect, reflect, grow, mature, nurture, and enrich our sense of self. Therapy facilitates engagement with both conscious and unconscious aspects of the emotional, intellectual, social, and spiritual realms of the internal self, to work through the pain and overcome anchors that impede progress and healing.</p>
+      <p class="signature">Let us take this journey together.</p>
+      <p style="color:var(--muted)">— Hema Babaria, Ph.D.</p>
+
+      <form class="ack-box" id="ack-form" novalidate>
+        <h3 style="margin-bottom:14px">New patient acknowledgement</h3>
+        <label class="ack-check" for="ack-check">
+          <input type="checkbox" id="ack-check" name="ack">
+          <span>I have read the Welcome Note and I understand that therapy is a unique, individualized, and collaborative journey.</span>
+        </label>
+        <div class="form-row" style="margin-top:18px">
+          <div class="field"><label for="ack-name">Full name</label><input type="text" id="ack-name" name="ack_name" autocomplete="name" required></div>
+          <div class="field" style="display:flex;align-items:flex-end"><button type="submit" class="btn btn-primary" id="ack-submit" disabled style="width:100%">I acknowledge</button></div>
+        </div>
+        <div class="ack-status" id="ack-status" role="status" aria-live="polite"></div>
+      </form>
+    </article>
+  </div>
+</section>
+
+<section class="section-alt locked" id="request-section" aria-disabled="true">
+  <div class="container prose">
+    <div class="section-head" style="margin-bottom:28px">
+      <span class="eyebrow">Step 2</span>
+      <h2>Request your first appointment</h2>
+      <p>Available after you acknowledge the Welcome Note. Submitting opens your email app with your request ready to send.</p>
+    </div>
+    <form class="form card" id="request-form">
+      <div class="form-row">
+        <div class="field"><label for="req-name">Full name</label><input type="text" id="req-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="req-phone">Phone</label><input type="tel" id="req-phone" name="phone" autocomplete="tel" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="req-email">Email</label><input type="email" id="req-email" name="email" autocomplete="email" required></div>
+        <div class="field"><label for="req-pref">Preferred contact</label>
+          <select id="req-pref" name="contact_pref"><option>Phone</option><option>Email</option></select></div>
+      </div>
+      <div class="field"><label for="req-avail">Preferred days / times</label><input type="text" id="req-avail" name="availability" placeholder="e.g., Tuesday or Thursday evenings"></div>
+      <div class="field"><label for="req-msg">What brings you to therapy? (optional, brief)</label><textarea id="req-msg" name="message" placeholder="A sentence or two is plenty — please don't include detailed clinical information."></textarea></div>
+      <p class="form-note">For your privacy, please share only brief, general information here.</p>
+      <div><button type="submit" class="btn btn-coral">Send appointment request</button></div>
+      <div class="form-success" id="request-success" role="status">Thank you. Your email app should open with your request — please press send. If it didn't open, email <a href="#" data-email>drhemababaria@gmail.com</a>.</div>
+    </form>
+  </div>
+</section>
+<section style="padding:0 0 70px" class="section-alt">
+  <div class="container prose">
+    <div class="crisis"><strong>In crisis?</strong> Please don't wait for a reply. Call or text <a href="tel:988">988</a>, call <a href="tel:911">911</a>, or go to the nearest emergency room.</div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Meraki</div>
+        <div class="footer-sub">Psychological Services</div>
+        <p>Hema Babaria, Ph.D. — Psychologist<br>Private practice in Chester Springs, Pennsylvania.</p>
+        <p style="letter-spacing:.2em;font-size:.85rem;color:#c9c4ef">journey through self-reflection</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Me</a></li>
+          <li><a href="approach.html">My Approach</a></li>
+          <li><a href="practice.html">Practice Information</a></li>
+          <li><a href="new-patients.html">New Patients</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li>225 Byers Road<br>Chester Springs, PA 19425</li>
+          <li><a href="tel:+16108883425">610-888-3425</a></li>
+          <li><a href="#" data-email>drhemababaria@gmail.com</a></li>
+          <li><a href="new-patients.html">Request a first appointment</a></li>
+        </ul>
+        <p class="footer-crisis">In a crisis, call or text <a href="tel:988">988</a> or call <a href="tel:911">911</a>.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Meraki Psychological Services. All rights reserved.</span>
+      <span>This website is for information only and does not create a therapist–patient relationship.</span>
+    </div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
