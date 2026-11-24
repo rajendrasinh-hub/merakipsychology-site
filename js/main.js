@@ -2,7 +2,12 @@
 
 /* ==== Practice settings: update these before going live ==== */
 const PRACTICE = {
-  email: "drhemababaria@gmail.com"
+  email: "drhemababaria@gmail.com",
+  phone: "610-888-3425",
+  // Web3Forms access key (free: https://web3forms.com — enter the practice email, the key is emailed to you).
+  // While this is empty, forms are delivered through FormSubmit (https://formsubmit.co) instead;
+  // the very first submission triggers a one-time "Activate form" email to the practice inbox.
+  web3formsKey: ""
 };
 
 (function () {
@@ -47,12 +52,61 @@ const PRACTICE = {
   };
   const ACK_KEY = "meraki_welcome_ack";
 
-  // Opens the visitor's email app with the form contents
-  function sendViaEmail(subject, lines) {
-    const body = lines.filter(Boolean).join("\n");
-    window.location.href = "mailto:" + PRACTICE.email +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(body);
+  // Sends a form to the practice inbox in the background (no email app needed)
+  async function deliver(subject, fields, replyTo, honeypot) {
+    if (honeypot) return true; // bot filled the hidden field: pretend success, send nothing
+    if (PRACTICE.web3formsKey) {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(Object.assign({
+          access_key: PRACTICE.web3formsKey,
+          subject: subject,
+          from_name: "Meraki Psychological Services website",
+          replyto: replyTo
+        }, fields))
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error(data.message || "Send failed");
+      return true;
+    }
+    const res = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(PRACTICE.email), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(Object.assign({
+        _subject: subject,
+        _template: "table",
+        _captcha: "false",
+        _replyto: replyTo
+      }, fields))
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) === "false") throw new Error(data.message || "Send failed");
+    return true;
+  }
+
+  // Wires a form: disables the button while sending and shows success / error messages
+  function wireForm(form, successEl, errorEl, build) {
+    const btn = form.querySelector('button[type="submit"]');
+    const label = btn ? btn.textContent : "";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const f = new FormData(form);
+      const { subject, fields, replyTo } = build(f);
+      successEl.classList.remove("show"); errorEl.classList.remove("show");
+      if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+      try {
+        await deliver(subject, fields, replyTo, f.get("website_hp"));
+        form.querySelectorAll("input:not([type=hidden]), textarea").forEach((el) => { if (el.type !== "checkbox") el.value = ""; });
+        successEl.classList.add("show");
+        successEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch (err) {
+        errorEl.classList.add("show");
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+      }
+    });
   }
 
   /* ---------- New patient welcome acknowledgement ---------- */
@@ -102,42 +156,38 @@ const PRACTICE = {
   /* ---------- New patient appointment request ---------- */
   const reqForm = document.getElementById("request-form");
   if (reqForm) {
-    reqForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+    wireForm(reqForm, document.getElementById("request-success"), document.getElementById("request-error"), (f) => {
       const ack = store.get(ACK_KEY) || {};
-      const f = new FormData(reqForm);
-      sendViaEmail("New patient appointment request — " + f.get("name"), [
-        "Name: " + f.get("name"),
-        "Phone: " + f.get("phone"),
-        "Email: " + f.get("email"),
-        "Preferred contact: " + f.get("contact_pref"),
-        "Preferred days/times: " + (f.get("availability") || "—"),
-        "",
-        "What brings you to therapy (optional):",
-        f.get("message") || "—",
-        "",
-        "Welcome Note acknowledged: " + (ack.name ? "Yes — " + ack.name + " on " + ack.date : "Yes")
-      ]);
-      document.getElementById("request-success").classList.add("show");
+      return {
+        subject: "New patient appointment request — " + f.get("name"),
+        replyTo: f.get("email"),
+        fields: {
+          "Name": f.get("name"),
+          "Phone": f.get("phone"),
+          "Email": f.get("email"),
+          "Preferred contact": f.get("contact_pref"),
+          "Preferred days / times": f.get("availability") || "—",
+          "What brings you to therapy": f.get("message") || "—",
+          "Welcome Note acknowledged": ack.name ? "Yes — " + ack.name + " on " + ack.date : "Yes"
+        }
+      };
     });
   }
 
   /* ---------- General contact form ---------- */
   const contactForm = document.getElementById("contact-form");
   if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const f = new FormData(contactForm);
-      sendViaEmail("Website inquiry — " + f.get("name"), [
-        "Name: " + f.get("name"),
-        "Email: " + f.get("email"),
-        "Phone: " + (f.get("phone") || "—"),
-        "Topic: " + f.get("topic"),
-        "",
-        f.get("message")
-      ]);
-      document.getElementById("contact-success").classList.add("show");
-    });
+    wireForm(contactForm, document.getElementById("contact-success"), document.getElementById("contact-error"), (f) => ({
+      subject: "Website inquiry — " + f.get("name") + " (" + f.get("topic") + ")",
+      replyTo: f.get("email"),
+      fields: {
+        "Name": f.get("name"),
+        "Email": f.get("email"),
+        "Phone": f.get("phone") || "—",
+        "Topic": f.get("topic"),
+        "Message": f.get("message")
+      }
+    }));
   }
 
   function escapeHtml(s) {

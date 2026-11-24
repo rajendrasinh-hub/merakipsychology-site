@@ -68,9 +68,10 @@
     <div class="section-head" style="margin-bottom:28px">
       <span class="eyebrow">Step 2</span>
       <h2>Request your first appointment</h2>
-      <p>Available after you acknowledge the Welcome Note. Submitting opens your email app with your request ready to send.</p>
+      <p>Available after you acknowledge the Welcome Note. Your request is sent directly to Dr. Babaria's office.</p>
     </div>
     <form class="form card" id="request-form">
+      <div class="hp-field" aria-hidden="true"><label>Leave this field empty<input type="text" name="website_hp" tabindex="-1" autocomplete="off"></label></div>
       <div class="form-row">
         <div class="field"><label for="req-name">Full name</label><input type="text" id="req-name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="req-phone">Phone</label><input type="tel" id="req-phone" name="phone" autocomplete="tel" required></div>
@@ -84,7 +85,8 @@
       <div class="field"><label for="req-msg">What brings you to therapy? (optional, brief)</label><textarea id="req-msg" name="message" placeholder="A sentence or two is plenty — please don't include detailed clinical information."></textarea></div>
       <p class="form-note">For your privacy, please share only brief, general information here.</p>
       <div><button type="submit" class="btn btn-coral">Send appointment request</button></div>
-      <div class="form-success" id="request-success" role="status">Thank you. Your email app should open with your request — please press send. If it didn't open, email <a href="#" data-email>drhemababaria@gmail.com</a>.</div>
+      <div class="form-success" id="request-success" role="status">Thank you — your appointment request has been sent. The practice will contact you using your preferred method.</div>
+      <div class="form-error" id="request-error" role="alert">Sorry, your request could not be sent right now. Please try again, or call <a href="tel:+16108883425">610-888-3425</a> or email <a href="#" data-email>drhemababaria@gmail.com</a>.</div>
     </form>
   </div>
 </section>
