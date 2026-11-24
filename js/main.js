@@ -7,7 +7,7 @@ const PRACTICE = {
   // Web3Forms access key (free: https://web3forms.com — enter the practice email, the key is emailed to you).
   // While this is empty, forms are delivered through FormSubmit (https://formsubmit.co) instead;
   // the very first submission triggers a one-time "Activate form" email to the practice inbox.
-  web3formsKey: ""
+  web3formsKey: "004c3692-47f5-4d8e-baee-b742859f09ff"
 };
 
 (function () {
